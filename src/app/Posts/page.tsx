@@ -1,10 +1,19 @@
 import Link from 'next/link';
+import Image from 'next/image';
+
+// Define TypeScript Interface
+interface Bike {
+  id: string;
+  title: string;
+  image: string;
+}
 
 const Home = async () => {
-  // Use the correct endpoint
+  // Fetch data with error handling
   const res = await fetch('https://67a72cb0203008941f66d44f.mockapi.io/bikes');
-  const bikesData = await res.json();
-
+  if (!res.ok) throw new Error('Failed to fetch bikes');
+  
+  const bikesData: Bike[] = await res.json(); // Use typed array
 
   return (
     <div>
@@ -15,15 +24,17 @@ const Home = async () => {
 
       {/* Grid container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-        {bikesData.map((bike: any) => (
+        {bikesData.map((bike) => (
           <div
             key={bike.id}
             className="w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:shadow-lg flex flex-col items-center transition-transform transform hover:scale-105"
           >
-            {/* Image */}
-            <img
+            {/* Optimized Image */}
+            <Image
               src={bike.image}
               alt={bike.title}
+              width={300} // Adjust based on layout
+              height={160} // Adjust based on layout
               className="mb-4 w-full h-40 object-cover rounded"
             />
 

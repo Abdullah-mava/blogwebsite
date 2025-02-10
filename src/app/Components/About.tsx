@@ -17,9 +17,10 @@ const About = () => {
 
           {/* Content */}
           <div className="flex flex-col md:flex-row items-center gap-6">
-            <p className="text-md md:text-5xl leading-7 text-center md:text-left flex-1">
-            we are passionate about everything related to bikes. Whether you're a casual rider, a fitness enthusiast, or an adrenaline-seeking mountain biker, our blog is your ultimate destination for biking knowledge.
-            </p>
+          <p className="text-md md:text-5xl leading-7 text-center md:text-left flex-1">
+  We are passionate about everything related to bikes. Whether you are a casual rider, a fitness enthusiast, or an adrenaline-seeking mountain biker, our blog is your ultimate destination for biking knowledge.
+</p>
+
             
             <img
               src="/about-bike.jpg"
