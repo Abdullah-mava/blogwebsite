@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 const About = () => {
  
 
@@ -22,7 +23,7 @@ const About = () => {
 </p>
 
             
-            <img
+            <Image
               src="/about-bike.jpg"
               alt="Contact Us"
               className="rounded-lg shadow-lg max-w-full md:max-w-xs w-full"

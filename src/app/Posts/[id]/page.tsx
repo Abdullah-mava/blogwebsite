@@ -23,8 +23,12 @@ const Home = () => {
 
         const data: Bike[] = await res.json();
         setBikesData(data);
-      } catch (err) {
-        setError("Error fetching bike data. Please try again.");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred.");
+        }
       }
     };
 
