@@ -1,43 +1,77 @@
-"use client";
-import React from "react";
-import Comments from "@/app/Components/Comments";
-type bike = {
-  image: string;
+"use client"; // Marking it as a client component
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+// Define TypeScript Interface
+interface Bike {
   id: string;
   title: string;
-  content: string;
-};
+  image: string;
+}
 
-const Bike = async ({ params }: { params: { id: string } }) => {
-  const id = params.id;
-  const res = await fetch(`https://67a72cb0203008941f66d44f.mockapi.io/bikes/${id}`);
-  const bikes: bike = await res.json();
+const Home = () => {
+  const [bikesData, setBikesData] = useState<Bike[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
- 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("https://67a72cb0203008941f66d44f.mockapi.io/bikes");
+        if (!res.ok) throw new Error("Failed to fetch bikes");
+
+        const data: Bike[] = await res.json();
+        setBikesData(data);
+      } catch (err) {
+        setError("Error fetching bike data. Please try again.");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <div className="max-w-4xl mx-auto my-12 p-6 bg-gray-100 rounded-lg shadow-lg">
-      {/* Title */}
-      <h1 className="text-center text-4xl font-bold text-gray-800 mb-6">
-        {bikes.title}
-      </h1>
-
-      {/* Image */}
-      <div className="flex justify-center mb-6">
-        <img
-          src={bikes.image}
-          alt={bikes.title}
-          className="rounded-lg shadow-md w-full max-w-lg h-auto object-cover"
-        />
-      </div>
-
-      {/* Content */}
-      <p className="text-gray-700 text-lg leading-relaxed text-center">
-        {bikes.content}
+    <div>
+      <h1 className="text-center text-3xl font-bold my-6">Blogs</h1>
+      <p className="text-center text-gray-700 mb-8">
+        Explore posts about various types of bikes!
       </p>
-      <Comments/>
+
+      {error && <p className="text-center text-red-600">{error}</p>}
+
+      {/* Grid container */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+        {bikesData.map((bike) => (
+          <div
+            key={bike.id}
+            className="w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:shadow-lg flex flex-col items-center transition-transform transform hover:scale-105"
+          >
+            {/* Optimized Image */}
+            <Image
+              src={bike.image}
+              alt={bike.title}
+              width={300} // Adjust based on layout
+              height={160} // Adjust based on layout
+              className="mb-4 w-full h-40 object-cover rounded"
+            />
+
+            {/* Link and text */}
+            <Link href={`/Posts/${bike.id}`} passHref>
+              <div className="text-center">
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
+                  {bike.title}
+                </h5>
+                <p className="font-normal text-gray-700">
+                  Click to explore!
+                </p>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default Bike;
+export default Home;
